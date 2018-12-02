@@ -1,4 +1,4 @@
-const {getInput, assertEquals} = require('../common.js');
+const {runAndMeasure} = require('../common.js');
  
 function solveFirst(input) {
   const componentCount = input
@@ -43,5 +43,4 @@ function solveSecond(input) {
   }
 }
 
-const input = getInput();
-console.log('Solutions: %s, %s', solveFirst(input), solveSecond(input));
+runAndMeasure(solveFirst, solveSecond);

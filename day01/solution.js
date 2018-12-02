@@ -1,4 +1,4 @@
-const {getInput, assertEquals} = require('../common.js');
+const {runAndMeasure, assertEquals} = require('../common.js');
  
 function solveFirst(input) {
   return input.reduce((acc, e) => +e + acc, 0);
@@ -32,5 +32,4 @@ assertEquals(0, solveSecond(['+0']));
 assertEquals(3, solveSecond(['+1', '+2', '-1', '+1']));
 assertEquals(0, solveSecond(['+1', '-2']));
 
-const input = getInput();
-console.log('Solutions: %s, %s', solveFirst(input), solveSecond(input));
+runAndMeasure(solveFirst, solveSecond);

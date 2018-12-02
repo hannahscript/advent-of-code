@@ -1,16 +1,11 @@
 const {getInput, assertEquals} = require('../common.js');
  
 function solveFirst(input) {
-  let twoLettersAmount = 0;
-  let threeLettersAmount = 0;
-  input.forEach(id => {
-    const countmap = createCountMap(id);
-    const [twoComponent, threeComponent] = getChecksumComponents(countmap);
-    twoLettersAmount += twoComponent;
-    threeLettersAmount += threeComponent;
-  });
+  const componentCount = input
+    .map(id => getChecksumComponents(createCountMap(id)))
+    .reduce((acc, e) => [acc[0] + e[0], acc[1] + e[1]], [0, 0]);
   
-  return twoLettersAmount * threeLettersAmount;
+  return componentCount[0] * componentCount[1];
 }
 
 function createCountMap(id) {

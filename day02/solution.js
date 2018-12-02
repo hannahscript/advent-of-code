@@ -21,15 +21,9 @@ function createCountMap(id) {
 
 // Naming is hard
 function getChecksumComponents(countmap) {
-  let twoOfAnyLetter = false;
-  let threeOfAnyLetter = false;
-  
-  Object.values(countmap).forEach(n => {
-    twoOfAnyLetter = (n === 2) || twoOfAnyLetter;
-    threeOfAnyLetter = (n === 3) || threeOfAnyLetter;
-  });
-  
-  return [twoOfAnyLetter, threeOfAnyLetter];
+  return Object.values(countmap)
+    .reduce((acc, e) => [e === 2 | acc[0], e === 3 || acc[1]],
+      [false, false]);
 }
 
 function solveSecond(input) {

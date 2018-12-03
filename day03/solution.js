@@ -4,8 +4,9 @@ function initializeMap() {
   return new Array(1000 * 1000).fill(0);
 }
 
-function markAndCountClaim(map, claim) {
-  claimToPositions(claim).positions.forEach(p => map[p]++);
+function lineToClaim(line) {
+  const [id, left, top, width, height] = line.match(/#(\d+) @ (\d+?),(\d+?): (\d+)x(\d+)/).slice(1).map(m => +m);
+  return {id, left, top, width, height};
 }
 
 function claimToPositions(claim) {
@@ -21,22 +22,8 @@ function claimToPositions(claim) {
   return {id: claim.id, positions};
 }
 
-function lineToClaim(line) {
-  const [id, left, top, width, height] = line.match(/#(\d+) @ (\d+?),(\d+?): (\d+)x(\d+)/).slice(1).map(m => +m);
-  return {id, left, top, width, height};
-}
-
-function solveFirst(input) {
-  const map = initializeMap();
-  input.forEach(line => markAndCountClaim(map, lineToClaim(line)));
-  return map.filter(s => s > 1).length;
-}
-
-function solveSecond(input) {
-  const map = initializeMap();
-  const claimUntouched = new Array(input.length + 1).fill(true);
-  input.forEach(line => markClaimOnce(map, claimUntouched, lineToClaim(line)));
-  return claimUntouched.slice(1).findIndex(c => c) + 1;
+function markAndCountClaim(map, claim) {
+  claimToPositions(claim).positions.forEach(p => map[p]++);
 }
 
 function markClaimOnce(map, claimUntouched, claim) {
@@ -50,6 +37,20 @@ function markClaimOnce(map, claimUntouched, claim) {
       map[p] = -1;
     }
   });
+}
+
+
+function solveFirst(input) {
+  const map = initializeMap();
+  input.forEach(line => markAndCountClaim(map, lineToClaim(line)));
+  return map.filter(s => s > 1).length;
+}
+
+function solveSecond(input) {
+  const map = initializeMap();
+  const claimUntouched = new Array(input.length + 1).fill(true);
+  input.forEach(line => markClaimOnce(map, claimUntouched, lineToClaim(line)));
+  return claimUntouched.slice(1).findIndex(c => c) + 1;
 }
 
 runAndMeasure(solveFirst, solveSecond);
